@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+button{
+  outline: none;
+}
+
+.more-btn{
+  display: flex;
+  justify-content: center;
+}
+
+.button-load-more{
+  padding: 13px 15px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background-color: yellow;
+  color: #222222;
+  margin: 10px 0;
+}
+.button-load-more:hover{
+  background-color: #F9FF32;
+}
+
+.list-item{
+  display: flex;
+  flex-direction: column;
+  margin: 10px 25px;
+  border: 1px solid silver;
+}
+.list-h3{
+  margin: 0;
+  padding: 5px 10px;
+}
+.list-body{
+  padding: 0 10px;
+}
