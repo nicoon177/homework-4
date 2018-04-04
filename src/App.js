@@ -1,22 +1,52 @@
 import React, { Component } from 'react';
-import data from './data';
 
 import MoreButton from './components/MoreButton';
 import PostList from "./components/PostList";
 import Search from './components/Search';
 
+const ROOT_URL = 'https://jsonplaceholder.typicode.com';
+
 class App extends Component {
     constructor(props) {
-        super (props);
+        super(props);
 
         this.state = {
-            countPosts: data.length,
-            countPostShow: 10,
+            countPosts: 0,
+            countPostShow: 0,
             btnHidden: false,
             search: '',
-            postsShowed: data.slice(0, 10),
-            filterPosts: data
+            postsShowed: [],
+            filterPosts: [],
+            fetchedData: [],
+            loading: true
         }
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            fetch(`${ROOT_URL}/posts`)
+                .then(response => response.json())
+                .then(data => {
+                    this.setState({
+                        filterPosts: data,
+                        postsShowed: data.slice(0, 10),
+                        countPosts: data.length,
+                        loading: false
+                    })
+                })
+        }, 2000);
+
+        setInterval(() => {
+            fetch(`${ROOT_URL}/posts`)
+                .then(response => response.json())
+                .then(
+                (posts) => {
+                    this.setState({
+                        fetchedData: posts
+                    });
+                }
+            );
+        }, 3000);
     }
 
     handleClick = (e) => {
@@ -36,7 +66,7 @@ class App extends Component {
 
     handleChange = (e) => {
         e.preventDefault();
-        const filterPosts = data.filter((post) => {
+        const filterPosts = this.state.fetchedData.filter((post) => {
                 if(post.title.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1)
                     return post;
             }
@@ -58,7 +88,7 @@ class App extends Component {
         return (
             <div>
                 <Search value={this.state.search} onChange={this.handleChange} />
-                <PostList postShow={this.state.postsShowed} />
+                    <PostList postShow={this.state.postsShowed} loading={this.state.loading} />
                 <MoreButton onClick={this.handleClick} hidden={this.state.btnHidden} />
             </div>
         );
